@@ -1,4 +1,2 @@
 
-class AmountTest {
-
-}
+class AmountTest
