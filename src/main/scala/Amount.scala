@@ -15,4 +15,5 @@ case class Amount(value: Double, currency: Currency) {
 
   def changedIn(counterpart: Currency)(implicit exchanges: Exchanges): Amount = exchanges(this, counterpart)
 
+  override def toString: String = s"$value $currency"
 }

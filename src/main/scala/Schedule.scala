@@ -18,4 +18,6 @@ case class Schedule(initialAmount: Amount, numberOfPeriod: Int, startDate: CashD
   }
 
   def iterator: Iterator[CashFlow] = flows.iterator
+
+  override def toString: String = flows.mkString("\n", "\n", "")
 }

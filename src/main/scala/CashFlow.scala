@@ -5,7 +5,7 @@ case class CashFlow(date: CashDate, flow: Amount, balance: Amount) {
     balance = Amount(balance.value - flow.value, balance.currency)
   )
 
-  override def toString = s"$date , $flow , $balance"
+  override def toString = s"$date\t, $flow\t, $balance"
 }
 
 object CashFlow {

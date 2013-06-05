@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 import java.util.Currency
 import org.scalatest.FunSpec
 import org.scalatest.matchers.{MatchResult, BeMatcher, ShouldMatchers}
@@ -77,6 +78,8 @@ trait AmountImplicits {
   }
 
   implicit def stringToCurrency(currencyCode: String): Currency = Currency.getInstance(currencyCode)
+
+  implicit def stringToDate(date: String): CashDate = CashDate(new SimpleDateFormat("dd/MM/yyyy").parse(date))
 
 }
 
