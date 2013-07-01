@@ -1,7 +1,7 @@
 # DSL with Scala
 
 ## Objective
-What is the value of a program relative to? It's Domain! So, let's make it be valuable.
+What is the value of a program mostly relative to? It's Domain! So, let's make it be valuable.
 
 How can we use **Scala syntax** to create a **DSL** (*Domain Specific Language*)?
 We'll also see that Scala is well suited for **BDD** (*Behavior Driven Development*) and **DDD** (*Domain Driven Design*).
@@ -49,12 +49,18 @@ The test can now be written
     	it("can be added to another amount of the same currency"){
     	    val result = _15_EUR.add(_20_EUR)
 	
-			//TODO result should have a of 35d
+			//TODO result should have value 35d
 			Assertions.assertThat(result).isEqualTo(Amount(35d,EUR))
 	    }   
 	}
 
-But there is not keyword in Scala test for Amount and Currency. Let's create it!
+NB : take a look a ShouldMatchers and HaveMatchers in the documentation of Scalatest to fix the TODO.
+
+NB : The trait ShouldMatchers contains all the imports to *add* the method should on our object **result**. We'll explain that later on.
+
+But there is not there is no matcher for currencies in Scalatest. Let's create it!
+
+
 
 ###Step 3 : creating our own Scalatest BeMatcher
 In AmountTest file, create a trait named **AmountImplicits**. Now **AmountTest** class should extends **AmountImplicits**
@@ -77,6 +83,8 @@ Now the test can be written:
 			result should be(in(EUR))
 	    }   
 	}
+	
+NB : One limitation of this syntax is the number of parenthesis. 
 	
 ###Step 4 : implicit conversion
 How can we get rid of the following line which is not important for the test?
@@ -108,7 +116,7 @@ The test code is now like this:
 
 It doesn't compile because Scala compiler doesn't know that it case use our brand new function. To do that, just place the keyword **implicit** before *def*.  And it's compiling!
 
-###Step 5 : adding behavior to existing class
+###Step 5 : adding behavior to existing class (like the ShouldMatchers)
 Let's create a new behavior to our Amount, the multiplication by a coefficient. The test is like this:
 	
 	it("can multiply a coefficient") {
@@ -138,13 +146,15 @@ But what happens if I want to write this ?
 	
 It doesn't compile because this method doesn't exist. Let's create it!
 
-In *AmountImplicits*, let's create an other implicit function that transform a Double into something with a method named multiply(right:Amount)
+In *AmountImplicits*, let's create another implicit function that transform a Double into something with a method named multiply(right:Amount)
 
 It should look like something like this:
 	
 	implicit def extendedDouble(coefficient: Double) = new {
     	def multiply(right: Amount): Amount = ???
 	}
+	
+This creates a new anonymous class that contains a method *multiply* with an amount as parameter and returns an amount. 
 	
 And it now compile. The content assist of the IDE propose you the method! Great! To improve the compiled code, we can ask Scala compiler to inline the code. For that,we have to create an implicit class from our previous code:
 
